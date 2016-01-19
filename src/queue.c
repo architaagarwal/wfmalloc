@@ -55,7 +55,7 @@ wf_queue_head_t* create_wf_queue(wf_queue_node_t* sentinel) {
 void init_wf_queue_node(wf_queue_node_t* node) {
 	LOG_PROLOG();
 
-	node->next = (stamped_ref_t*)malloc(sizeof(stamped_ref_t));
+	node->next = (stamped_ref_t*)malloc(sizeof(stamped_ref_t)); // called whne page is created; pages are created when we ask OS
 	node->next->stamp = 0;
 	node->next->ref = NULL;
 	node->enq_tid = -1;
@@ -63,7 +63,7 @@ void init_wf_queue_node(wf_queue_node_t* node) {
 
 	LOG_EPILOG();
 }
-
+// used only for testing
 wf_queue_node_t* create_wf_queue_node() {
 	LOG_PROLOG();
 

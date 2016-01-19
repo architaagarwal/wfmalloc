@@ -33,9 +33,15 @@ libwfmalloc.so: $(OBJS) $(USER_OBJS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
+wfmalloc: $(OBJS) $(USER_OBJS)
+		@echo 'Building target: $@'
+	  	@echo 'Invoking: GCC C Linker'
+	   	gcc  -o "wfmalloc" $(OBJS) $(USER_OBJS) $(LIBS)
+	    	@echo 'Finished building target: $@'
+
 # Other Targets
 clean:
-	-$(RM) $(OBJS)$(C_DEPS)$(LIBRARIES) libwfmalloc.so
+	-$(RM) $(OBJS)$(C_DEPS)$(LIBRARIES) libwfmalloc.so wfmalloc
 	-@echo ' '
 
 .PHONY: all clean dependents

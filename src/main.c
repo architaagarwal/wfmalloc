@@ -281,15 +281,23 @@ void test_wf_dequeue() {
 void* test_worker_wfmalloc(void* data) {
     LOG_PROLOG();
 
-    const int COUNT_MALLOC_OPS = 1000000;
+    const int COUNT_MALLOC_OPS = 100000;
     int thread_id = *((int*)data);
     int i = 0;
-    void** mem = malloc(sizeof(void*) * COUNT_MALLOC_OPS);
+    //void** mem = malloc(sizeof(void*) * COUNT_MALLOC_OPS);
+    int *mem[COUNT_MALLOC_OPS];
     for (i = 0; i < COUNT_MALLOC_OPS; ++i) {
-    	mem[i] = wfmalloc(4, thread_id);
-    	wffree(mem[i]);
+    	mem[i] = (int*) wfmalloc(4, thread_id);
+	*mem[i] = i;
     }
 
+    for (i = 0; i < COUNT_MALLOC_OPS; ++i) {
+	if (*mem[i] != i) {
+	    LOG_WARN("Memory Corruption at thread %d, expected value = %d, received value = %d", thread_id, i, *mem[i]);
+	}
+    	wffree(mem[i]);
+    }
+        LOG_WARN("yayyy!!");
 	LOG_EPILOG();
 	return NULL;
 }
@@ -297,7 +305,7 @@ void* test_worker_wfmalloc(void* data) {
 void test_wfmalloc() {
     LOG_PROLOG();
 
-    const int COUNT_THREADS = 10;
+    const int COUNT_THREADS = 100;
 
     wfinit(COUNT_THREADS);
 

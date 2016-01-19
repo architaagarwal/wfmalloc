@@ -9,11 +9,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+#include <unistd.h>
 
 page_t* create_page(uint32_t block_size) {
 	LOG_PROLOG();
 
-	page_t *ptr_page = (page_t*) malloc(sizeof(page_t));
+	page_t *ptr_page = (page_t*) sbrk(sizeof(page_t));  // this is when OS is asked for memory
 	ptr_page->header.block_size = block_size;
 	ptr_page->header.max_blocks = ((sizeof(page_t) - sizeof(page_header_t)) / BLOCK_SIZE(block_size));
 	memset(ptr_page->header.block_flags, BLOCK_OCCUPIED, sizeof(ptr_page->header.block_flags));
