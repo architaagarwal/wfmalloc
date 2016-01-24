@@ -11,7 +11,7 @@
 #include "includes/utils.h"
 #include <unistd.h>
 #include <stdlib.h>
-
+#include <assert.h>
 
 shared_pool_t* create_shared_pool(int count_threads) {
 	LOG_PROLOG();
@@ -23,6 +23,7 @@ shared_pool_t* create_shared_pool(int count_threads) {
 	pool->count_threads = count_threads;
 	pool->op_desc = create_queue_op_desc(count_threads);
 	pool->shared_thread_data = (shared_thread_data_t*)malloc(num_processors * sizeof(shared_thread_data_t));
+	assert(pool->shared_thread_data);
 	int bin = 0;
 	int queue = 0;
 	int pages = 0;
